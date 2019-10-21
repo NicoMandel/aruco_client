@@ -1,0 +1,13 @@
+# config things
+.vscode/
+
+# launch
+/launch/basic.launch
+/launch/downfacing.launch
+/launch/word2vec_reactive.launch
+
+/src/*
+!/src/wp_node.cpp
+/tf_nodes/
+
+!README.md
