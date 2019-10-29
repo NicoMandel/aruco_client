@@ -9,17 +9,17 @@ set(cv_bridge_DIR /usr/share/cv_bridge/cmake/)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  aruco_ros
-  cv_bridge
-  image_transport
+  # aruco_ros
+  # cv_bridge
+  # image_transport
   roscpp
   rospy
   sensor_msgs
   std_msgs
   geometry_msgs
   mavros_msgs
-  tf2
-  tf2_ros
+  # tf2
+  # tf2_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -142,7 +142,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(base_link_tf2_broadcaster tf_nodes/base_link_tf2_broadcaster.cpp)
+# add_executable(base_link_tf2_broadcaster tf_nodes/base_link_tf2_broadcaster.cpp)
 add_executable(wp_node src/wp_node.cpp)
 
 ## Rename C++ executable without prefix
@@ -156,9 +156,9 @@ add_executable(wp_node src/wp_node.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(base_link_tf2_broadcaster
-  ${catkin_LIBRARIES}
-)
+# target_link_libraries(base_link_tf2_broadcaster
+#   ${catkin_LIBRARIES}
+# )
 target_link_libraries(wp_node
   ${catkin_LIBRARIES}
 )
