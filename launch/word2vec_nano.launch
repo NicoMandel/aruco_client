@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- 3. Marker Detection from Kye - includes all the default configs -->
+	<!-- <include file="$(find ml_detector)/launch/marker_detect.launch">
+        <arg name="image_topic" value="/$(arg model_name)/usb_cam/image_raw"/>
+        <arg name="camera_info_topic" value="/$(arg model_name)/usb_cam/camera_info"/>
+    </include> -->
+
+    <!-- 4. Creating a broadcaster of the uav to the world  -->
+    <!-- <node pkg="aruco_client" type="base_link_tf2_broadcaster" name="base_link_world"/> -->
+    <!-- 4.1 Creating a static tf broadcaster, which broadcasts the transform from the camera to the base_link with the values from the iris sdf files -->
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="camera_tf_broadcaster" args="0.0 0.0 -0.03 1.57 3.14 0.0 base_link robot_camera_link"/>  -->
+    
+
+    <!-- 5. Creating a knowledgebase server -->
+    <!-- Have to be run as multiple, since WN only works with python3, but tf2 only with python2 -->
+    <node pkg="aruco_client" type="wp_node" name="wp_node" output="screen"/>
+    <!-- A node which will read waypoints on a message topic -->
+    <group ns="knowledgebase">
+        <rosparam command="load" file="$(find knowledge_server)/config/parameters.yaml"/>
+        <node pkg="knowledge_server" name="detection" type="word2vec_detection.py" output="screen"/> 
+        <node pkg="knowledge_server" name="tf_server" type="register_transform_server.py" output="screen"/>
+        <node pkg="knowledge_server" name="cam_tf" type="cam_points_transform.py" output="screen"/> 
+        <node pkg="knowledge_server" name="map_server" type="word2vec_mapping.py" output="screen"/>
+        <node pkg="knowledge_server" name="navigator" type="word2vec_navigation.py" output="screen"/>
+        <node pkg="knowledge_server" name="Surveillance_Node" type="surveillance_node.py" output="screen"/>
+        <!-- <node pkg="knowledge_server" name="semantic_map" type="semantic_map.py" output="screen"/>
+        <node pkg="knowledge_server" name="decision_maker" type="decision.py" output="screen"/> -->
+    </group> 
+    
+    
+</launch>
+
+
