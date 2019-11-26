@@ -16,7 +16,7 @@
     <arg name="vehicle" default="iris"/>
     <arg name="model_name" value="iris_bottom_cam"/> 
     <arg name="verbose" default="true"/>
-    <arg name="world" default="$(find aruco_client)/worlds/word2vec_downfacing.world"/> 
+    <arg name="world" default="$(find aruco_client)/worlds/word2vec_empty.world"/> 
     <arg name="rcs-file" default="rcS_edit"/>
     <arg name="init_wps" default="$(find knowledge_server)/config/Initial_WPs.csv"/>
     <arg name="sim_case" default="1"/>

@@ -1,30 +1,31 @@
 <?xml version="1.0" ?>
+<!-- Physics values adapted according to https://github.com/PX4/sitl_gazebo/commit/0686806fd94bd429aa66d2500e5e2aad16d2835b -->
 <sdf version="1.6">
-<!-- Empty world file to be launched with the spawning service from gazebo for dynamic marker placement -->
+    <!-- Empty world file to be launched with the spawning service from gazebo for dynamic marker placement -->
     <world name="default">
         <!-- Physics like this are required by Mavlink -->
         <physics name='default_physics' default='0' type='ode'>
             <ode>
                 <solver>
                     <type>quick</type>
-                    <iters>10</iters>
+                    <iters>4</iters>
                     <sor>1.3</sor>
                     <use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
                 </solver>
                 <constraints>
-                    <cfm>0</cfm>
+                    <cfm>0.05</cfm>
                     <erp>0.2</erp>
                     <contact_max_correcting_vel>100</contact_max_correcting_vel>
                     <contact_surface_layer>0.001</contact_surface_layer>
                 </constraints>
             </ode>
-            <max_step_size>0.002</max_step_size>
+            <max_step_size>0.00125</max_step_size>
             <real_time_factor>1</real_time_factor>
-            <real_time_update_rate>500</real_time_update_rate>
-            
+            <real_time_update_rate>800</real_time_update_rate>
         </physics>
         <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
         <gravity>0 0 -9.8066</gravity>
+
         <!-- A global light source -->
         <include>
             <uri>model://sun</uri>
@@ -34,7 +35,7 @@
             <uri>model://ground_plane</uri>
         </include>
 
-       
 
-        </world>
-    </sdf>
+
+    </world>
+</sdf>
