@@ -15,7 +15,7 @@
     <arg name="model_name" value="iris_bottom_cam"/> <!-- model iris_dual_cam also possible-->
     <arg name="verbose" default="true"/>
     <arg name="world" default="$(find aruco_client)/worlds/word2vec_empty.world"/> <!-- Name is with respect to the Gazebo env variable -->
-    <arg name="rcs-file" default="rcS_edit"/>
+    <!-- <arg name="rcs-file" default="rcS_edit"/> -->
     <arg name="sim_case" default="1"/>
 
     <!-- 1. Including the launch file for the Mavros -->
@@ -31,7 +31,7 @@
         <arg name="verbose" value="$(arg verbose)" />
         <arg name="world" value="$(arg world)" />
         <arg name="model_name" value="$(arg model_name)" />
-        <arg name="rcs-file" value="$(arg rcs-file)" />
+        <!-- <arg name="rcs-file" value="$(arg rcs-file)" /> -->
     </include>
 
     <!-- 3. Marker Detection from Kye - includes all the default configs -->
