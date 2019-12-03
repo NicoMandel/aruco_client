@@ -8,7 +8,7 @@
             <ode>
                 <solver>
                     <type>quick</type>
-                    <iters>4</iters>
+                    <iters>10</iters> <!-- According to sitl-gazebo-worlds/empty.world -->
                     <sor>1.3</sor>
                     <use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
                 </solver>
@@ -19,9 +19,9 @@
                     <contact_surface_layer>0.001</contact_surface_layer>
                 </constraints>
             </ode>
-            <max_step_size>0.00125</max_step_size>
+            <max_step_size>0.004</max_step_size>   <!-- According to sitl-gazebo-worlds/empty.world -->
             <real_time_factor>1</real_time_factor>
-            <real_time_update_rate>800</real_time_update_rate>
+            <real_time_update_rate>250</real_time_update_rate> <!-- Error thrown by mavlink -->
         </physics>
         <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
         <gravity>0 0 -9.8066</gravity>
