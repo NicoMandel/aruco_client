@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <!-- call the world file iris.world in px4/sitl/ etc -->
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find px4)/Tools/sitl_gazebo/worlds/iris_hitl.world"/>
-        <arg name="verbose" value="true"/>
-    </include>
-</launch>

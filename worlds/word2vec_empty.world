@@ -34,6 +34,10 @@
         <include>
             <uri>model://ground_plane</uri>
         </include>
+        <!-- An asphalt plane -->
+        <include>
+        <uri>model://asphalt_plane</uri>
+        </include>
 
 
 
