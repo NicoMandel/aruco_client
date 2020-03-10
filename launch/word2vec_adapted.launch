@@ -19,15 +19,12 @@
     <!-- <arg name="rcs-file" default="rcS_edit"/> -->
     <arg name="init_wps" default="$(find knowledge_server)/config/Initial_WPs.csv"/>
     <arg name="sim_case" default="1"/>
-    <arg name="hitl" default="false"/>
+    <arg name="model_name" default="iris_bottom_cam"/>
+
 
     <!-- 8. To upload the namespace for the IRIS for external nodes to discover it. mavros_posix_sitl passes the vehicle argument down
     To posix_sitl, which uses it to launch a node which supplies command line arguments to a ros node launching the UAV -->
     <param name="/vehicle_name" value="$(arg vehicle)" type="str"/>
-
-    <arg name="model_name" default="iris_bottom_cam"/>
-    <arg unless="$(arg hitl)" name="model_name_hitl" value="$(arg model_name)"/>
-    <arg if="$(arg hitl)" name="model_name_hitl" value="$(arg model_name)_hitl"/>
 
     <!-- <arg name="model_name" value="$(arg model_name)_hitl" if="$(arg hitl)"/> -->
     <!-- <arg name="model_name" default="iris_bottom_cam_hitl" if="$(eval hitl==true)"/> -->
@@ -44,7 +41,7 @@
         <arg name="vehicle" value="$(arg vehicle)" />
         <arg name="verbose" value="$(arg verbose)" />
         <arg name="world" value="$(arg world)" />
-        <arg name="model_name" value="$(arg model_name_hitl)" />
+        <arg name="model_name" value="$(arg model_name)" />
         <!-- <arg name="rcs-file" value="$(arg rcs-file)" /> -->
     </include>
 
