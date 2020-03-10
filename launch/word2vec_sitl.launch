@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Using the logic of the PX4 Tutorial here: https://dev.px4.io/en/simulation/ros_interface.html
+    1. Find the mavros_posix_sitl.launch, which is at Firmware/launch and include it
+    2. Set the new arguments given here: https://github.com/PX4/Firmware/blob/master/launch/mavros_posix_sitl.launch
+ -->
+    <!-- 2. Setting the Arguments -->
+    <!-- Careful with the default world - the mavlink default world requires other update rates -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="gui" default="true"/>
+    <arg name="vehicle" default="iris"/>
+    <arg name="verbose" default="true"/>
+    <arg name="world" default="$(find aruco_client)/worlds/word2vec_empty.world"/>
+    <!-- <arg name="rcs-file" default="rcS_edit"/> -->
+    <arg name="init_wps" default="$(find knowledge_server)/config/Initial_WPs.csv"/>
+    <arg name="sim_case" default="1"/>
+    <arg name="hitl" default="false"/>
+
+    <!-- 8. To upload the namespace for the IRIS for external nodes to discover it. mavros_posix_sitl passes the vehicle argument down
+    To posix_sitl, which uses it to launch a node which supplies command line arguments to a ros node launching the UAV -->
+    <param name="/vehicle_name" value="$(arg vehicle)" type="str"/>
+
+    <arg name="model_name" default="iris_bottom_cam"/>
+
+    <!-- <arg name="model_name" value="$(arg model_name)_hitl" if="$(arg hitl)"/> -->
+    <!-- <arg name="model_name" default="iris_bottom_cam_hitl" if="$(eval hitl==true)"/> -->
+
+    <!-- 1. Including the launch file for the Mavros -->
+    <include file="$(find px4)/launch/mavros_posix_sitl.launch">
+        <arg name="x" value="$(arg x)"/>
+        <arg name="y" value="$(arg y)"/>
+        <arg name="z" value="$(arg z)"/>
+        <arg name="R" value="$(arg R)"/>
+        <arg name="P" value="$(arg P)"/>
+        <arg name="Y" value="$(arg Y)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="vehicle" value="$(arg vehicle)" />
+        <arg name="verbose" value="$(arg verbose)" />
+        <arg name="world" value="$(arg world)" />
+        <arg name="model_name" value="$(arg model_name_hitl)" />
+        <!-- <arg name="rcs-file" value="$(arg rcs-file)" /> -->
+    </include>
+
+    <!--3. To run an image viewer which subscribes to the image_raw image -->
+    <!-- <node name="image_view_client" pkg="image_view" type="image_view" respawn="false" output="screen">
+        <remap from="image" to="/$(arg model_name)/usb_cam/image_raw" />
+    </node> -->
+
+    <!-- 3. Marker Detection from Kye - includes all the default configs -->
+    <include file="$(find ml_detector)/launch/marker_detect.launch">
+        <arg name="image_topic" value="/$(arg vehicle)/usb_cam/image_raw"/>
+        <arg name="camera_info_topic" value="/$(arg vehicle)/usb_cam/camera_info"/>
+    </include>
+
+    <!-- 4. Creating a broadcaster of the uav to the world  -->
+    <node pkg="aruco_client" type="base_link_tf2_broadcaster" name="base_link_world"/>
+    <!-- 4.1 Creating a static tf broadcaster, which broadcasts the transform from the camera to the base_link with the values from the iris sdf files -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="camera_tf_broadcaster" args="0.0 0.0 -0.03 1.57 3.14 0.0 base_link robot_camera_link"/>
+
+    <!-- 3.1 Displaying the image with the detections -->
+    <node name="image_viewer" pkg="image_view" type="image_view" output="screen">
+        <remap from="image" to="/ml_detector/image_overlay"/>
+    </node>
+
+    <!-- 5. Creating a knowledgebase server -->
+    <node pkg="aruco_client" type="wp_node" name="wp_node" output="screen"/>
+
+    <!-- 6. Launching the Spawn file, which will launch the locations of the markers -->
+    <node pkg="knowledge_server" name="Spawn_node" type="gazebo_spawning.py" output="screen" args="$(arg sim_case)"/>
+    <!-- A node which will read waypoints on a message topic -->
+    <!-- TODO: Change to the reduced version of the register_tf and detection nodes -->
+    <group ns="knowledgebase">
+        <rosparam command="load" file="$(find knowledge_server)/config/parameters.yaml"/>
+        <node pkg="knowledge_server" name="detection" type="word2vec_detection_reduced.py" output="screen"/>
+        <node pkg="knowledge_server" name="tf_server" type="register_tf_server_reduced.py" output="screen"/>
+        <node pkg="knowledge_server" name="cam_tf" type="cam_points_transform.py" output="screen"/>
+        <node pkg="knowledge_server" name="map_server" type="word2vec_mapping.py" output="screen"/>
+        <node pkg="knowledge_server" name="navigator" type="word2vec_navigation.py" output="screen" args="$(arg init_wps)"/>
+        <node pkg="knowledge_server" name="Surveillance_Node" type="surveillance_node.py" output="screen"/>
+        <!-- <node pkg="knowledge_server" name="semantic_map" type="semantic_map.py" output="screen"/>
+        <node pkg="knowledge_server" name="decision_maker" type="decision.py" output="screen"/> -->
+    </group>
+
+    <!-- 5. Running an Rviz, which will also display the tf tree -->
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find aruco_client)/config/rviz_config.rviz" />
+
+
+</launch>
+
+
