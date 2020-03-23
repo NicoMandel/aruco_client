@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="wp_file" default="$(find knowledge_server)/config/Initial_WPs.csv"/>
 
     <!-- 3. Marker Detection from Kye - includes all the default configs -->
 	<!-- <include file="$(find ml_detector)/launch/marker_detect.launch">
@@ -20,10 +21,10 @@
     <group ns="knowledgebase">
         <rosparam command="load" file="$(find knowledge_server)/config/parameters.yaml"/>
         <node pkg="knowledge_server" name="detection" type="word2vec_detection.py" output="screen"/> 
-        <node pkg="knowledge_server" name="tf_server" type="register_transform_server.py" output="screen"/>
+        <node pkg="knowledge_server" name="tf_server" type="register_tf_server_reduced.py" output="screen"/>
         <node pkg="knowledge_server" name="cam_tf" type="cam_points_transform.py" output="screen"/> 
         <node pkg="knowledge_server" name="map_server" type="word2vec_mapping.py" output="screen"/>
-        <node pkg="knowledge_server" name="navigator" type="word2vec_navigation.py" output="screen"/>
+        <node pkg="knowledge_server" name="navigator" type="word2vec_navigation.py" output="screen" args="$(arg wp_file)"/>
         <node pkg="knowledge_server" name="Surveillance_Node" type="surveillance_node.py" output="screen"/>
         <!-- <node pkg="knowledge_server" name="semantic_map" type="semantic_map.py" output="screen"/>
         <node pkg="knowledge_server" name="decision_maker" type="decision.py" output="screen"/> -->
