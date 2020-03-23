@@ -8,6 +8,6 @@
 
 /src/*
 !/src/wp_node.cpp
-/tf_nodes/
+!/tf_nodes/
 
 !README.md
