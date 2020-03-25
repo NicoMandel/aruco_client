@@ -32,7 +32,10 @@ void poseCallback(const geometry_msgs::PoseStampedPtr& msg){
 int main(int argc, char** argv){
     ros::init(argc, argv, "base_link_broadcaster");
     ros::NodeHandle n;
-    ros::Subscriber sub = n.subscribe("/mavros/local_position/pose", 3, &poseCallback);
+    std::string topic = "/mavros/local_position/pose";
+    ros::topic::waitForMessage<geometry_msgs::PoseStampedPtr>(topic, n, ros::Duration(10.0));
+
+    ros::Subscriber sub = n.subscribe(topic, 3, &poseCallback);
     ros::spin();
     return 0;
 }
