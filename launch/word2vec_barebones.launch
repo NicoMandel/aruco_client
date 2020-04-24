@@ -36,8 +36,8 @@
 
     <!-- 3. Marker Detection from Kye - includes all the default configs -->
 	 <include file="$(find ml_detector)/launch/marker_detect.launch">
-        <arg name="image_topic" value="/$(arg model_name)/usb_cam/image_raw"/>
-        <arg name="camera_info_topic" value="/$(arg model_name)/usb_cam/camera_info"/>
+        <arg name="image_topic" value="/$(arg vehicle)/usb_cam/image_raw"/>
+        <arg name="camera_info_topic" value="/$(arg vehicle)/usb_cam/camera_info"/>
      </include>
 
     <!-- 4. Creating a broadcaster of the uav to the world  -->
@@ -45,11 +45,6 @@
     <!-- 4.1 Creating a static tf broadcaster, which broadcasts the transform from the camera to the base_link with the values from the iris sdf files -->
     <node pkg="tf2_ros" type="static_transform_publisher" name="camera_tf_broadcaster" args="0.0 0.0 -0.03 1.57 3.14 0.0 base_link robot_camera_link"/> 
     
-    <!-- 3.1 Displaying the image with the detections -->
-    <node name="image_viewer" pkg="image_view" type="image_view" output="screen">
-        <remap from="image" to="/ml_detector/image_overlay"/>
-    </node>
-
     <!-- 6. Launching the Spawn file, which will launch the locations of the markers -->
     <node pkg="knowledge_server" name="Spawn_node" type="gazebo_spawning.py" output="screen" args="$(arg sim_case)"/>
 
