@@ -17,6 +17,7 @@
     <arg name="world" default="$(find aruco_client)/worlds/word2vec_empty.world"/> <!-- Name is with respect to the Gazebo env variable -->
     <!-- <arg name="rcs-file" default="rcS_edit"/> -->
     <arg name="sim_case" default="1"/>
+    <arg name="compressed" default="False"/>
 
     <!-- 1. Including the launch file for the Mavros -->
     <include file="$(find px4)/launch/mavros_posix_sitl.launch">
@@ -33,12 +34,6 @@
         <arg name="model_name" value="$(arg model_name)" />
         <!-- <arg name="rcs-file" value="$(arg rcs-file)" /> -->
     </include>
-
-    <!-- 3. Marker Detection from Kye - includes all the default configs -->
-	 <include file="$(find ml_detector)/launch/marker_detect.launch">
-        <arg name="image_topic" value="/$(arg vehicle)/usb_cam/image_raw"/>
-        <arg name="camera_info_topic" value="/$(arg vehicle)/usb_cam/camera_info"/>
-     </include>
 
     <!-- 4. Creating a broadcaster of the uav to the world  -->
     <node pkg="aruco_client" type="base_link_tf2_broadcaster" name="base_link_world"/>
