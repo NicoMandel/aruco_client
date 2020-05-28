@@ -1,7 +1,7 @@
 #include <ros/ros.h>
-#include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
+// #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <aruco_client/base_link_broadcaster.h>
 
@@ -12,14 +12,14 @@ positionbrc::positionbrc(ros::NodeHandle nh)
     tfs.header.frame_id = world_frame;
     tfs.child_frame_id = child_frame;
     tbr = tf2_ros::TransformBroadcaster();   
-    pose_subscriber = nh.subscribe(pose_topic,3, &poseCallback);
+    pose_subscriber = nh.subscribe(pose_topic,3, &positionbrc::poseCallback, this);
 }
 
 positionbrc::~positionbrc(){
 
 }
 
-positionbrc::poseCallback(const geometry_msgs::PoseStampedConstPtr& msg)
+void positionbrc::poseCallback(const geometry_msgs::PoseStampedConstPtr& msg)
 {
     try
     {
@@ -36,7 +36,7 @@ positionbrc::poseCallback(const geometry_msgs::PoseStampedConstPtr& msg)
     }
     catch(ros::Exception& e)
     {
-        ROS_INFO(e.what());
+       ROS_INFO(e.what());
     }
 }
 

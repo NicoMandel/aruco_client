@@ -1,5 +1,4 @@
 #include <ros/ros.h>
-#include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/PoseStamped.h>
@@ -14,10 +13,10 @@ class positionbrc
         tf2_ros::TransformBroadcaster tbr;
         ros::Subscriber pose_subscriber;
         geometry_msgs::TransformStamped tfs;
+        void poseCallback(const geometry_msgs::PoseStampedConstPtr& msg);
 
     public:
-        positionbrc(ros::NodeHandle);
+        positionbrc(ros::NodeHandle nh);
         ~positionbrc();
 
-        void poseCallback(const geometry_msgs::PoseStampedConstPtr& msg);
 };
