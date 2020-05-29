@@ -1,19 +1,20 @@
 #include <ros/ros.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+// #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <geometry_msgs/PoseStamped.h>
 #include "aruco_client/base_link_broadcaster.h"
-#include <tf2/transform_datatypes.h>
+// #include <tf2/transform_datatypes.h>
 
-positionbrc::positionbrc(ros::NodeHandle nh)
+positionbrc::positionbrc(ros::NodeHandle n)
 {   
-    ros::topic::waitForMessage<geometry_msgs::PoseStamped>(pose_topic, nh, ros::Duration(10.0));
-    tfs = geometry_msgs::TransformStamped();
+    this->nh = n;
+    ros::topic::waitForMessage<geometry_msgs::PoseStamped>(this->pose_topic, this->nh, ros::Duration(10.0));
+    this->tfs = geometry_msgs::TransformStamped();
     // tfs.header.frame_id = world_frame;
     // tfs.child_frame_id = child_frame;
-    tbr = tf2_ros::TransformBroadcaster();   
-    pose_subscriber = nh.subscribe(pose_topic,3, &positionbrc::poseCallback, this);
+    this->tbr = tf2_ros::TransformBroadcaster();   
+    this->pose_subscriber = this->nh.subscribe(this->pose_topic, 3, &positionbrc::poseCallback, this);
 }
 
 positionbrc::~positionbrc(){
@@ -26,8 +27,8 @@ void positionbrc::poseCallback(const geometry_msgs::PoseStampedConstPtr& msg)
     {
 	    // tfs = geometry_msgs::TransformStamped();
         tfs.header = msg->header;
-        tfs.header.frame_id = world_frame;
-        tfs.child_frame_id = child_frame;
+        tfs.header.frame_id = this->world_frame;
+        tfs.child_frame_id = this->child_frame;
         tfs.transform.translation.x = msg->pose.position.x;
         tfs.transform.translation.y = msg->pose.position.y;
         tfs.transform.translation.z = msg->pose.position.z;
