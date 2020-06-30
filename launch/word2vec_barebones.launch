@@ -17,7 +17,7 @@
     <arg name="world" default="$(find aruco_client)/worlds/word2vec_empty.world"/> <!-- Name is with respect to the Gazebo env variable -->
     <!-- <arg name="rcs-file" default="rcS_edit"/> -->
     <arg name="sim_case" default="1"/>
-    <arg name="compressed" default="False"/>
+    <!-- <arg name="compressed" default="False"/> -->
 
     <!-- 1. Including the launch file for the Mavros -->
     <include file="$(find px4)/launch/mavros_posix_sitl.launch">

@@ -23,7 +23,7 @@ positionbrc::~positionbrc(){
 
 void positionbrc::poseCallback(const geometry_msgs::PoseStampedConstPtr& msg)
 {
-    std::cout << "Hello" << std::endl;
+    // std::cout << "Hello" << std::endl;
     try
     {
 	    // tfs = geometry_msgs::TransformStamped();
@@ -40,7 +40,7 @@ void positionbrc::poseCallback(const geometry_msgs::PoseStampedConstPtr& msg)
 
         //tf2::fromMsg(msg, tfs);
         tbr.sendTransform(tfs);
-        std::cout << "Goodbye" << std::endl;
+        // std::cout << "Goodbye" << std::endl;
     }
     catch(ros::Exception& e)
     {
